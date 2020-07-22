@@ -1,0 +1,21 @@
+﻿@model FanFictionWebSite.Models.UserFanficControlViewModel
+
+@{ 
+    Layout = "_Layout";
+}
+
+<a href="/Fanfic/CreateOrEdit" class="btn btn-success">+ Create</a>
+
+@{ 
+    <table class="table">
+        @foreach (var f in Model.Fanfics)
+        {
+        <tr>
+            <td><a href ="/Fanfic/ViewChapter/?fanficId=@f.Id&number=0">@f.Name</a></td>
+            <td><a class="btn btn-warning" href="/Fanfic/CreateOrEdit/?fanficId=@f.Id">Edit</a></td>
+            <td><a class="btn btn-danger" href="/Fanfic/RemoveFanfic/?fanficId=@f.Id">Remove</a></td>
+        </tr>
+        }
+    </table>
+
+}

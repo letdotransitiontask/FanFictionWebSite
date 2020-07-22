@@ -1,0 +1,104 @@
+﻿@model FanFictionWebSite.Models.ViewChapterViewModel
+@using Microsoft.AspNetCore.Identity
+@using FanFictionWebSite.Entities
+@inject SignInManager<User> SignInManager
+@inject UserManager<User> UserManager
+@{ Layout = "_Layout";}
+
+<style>
+    h2 {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .star {
+        user-select: none;
+        font-size: 36px;
+    }
+
+    .active {
+        color: red;
+    }
+</style>
+@{
+    if (Model == null)
+    {
+        <h2>No such chapter</h2>
+    }
+    else
+    {
+        <h2>@Model.Name</h2>
+        if (Model.Image != null)
+        {
+            <img src="@Model.Image" class="img-fluid" alt="Responsive image">
+            <br />
+
+        }
+        <p>@Html.Raw(Model.Content)</p>
+        if (!Model.IsLast)
+        {
+            @Html.ActionLink("Read >>", "ViewChapter", "Fanfic", new { fanficId = Model.FanficId, number = Model.ChapterNumber + 1 }, new { @class = "btn btn-secondary" })
+        }
+        <h2>@Model.Likes.Count likes</h2>
+        <br />
+        if (SignInManager.IsSignedIn(User))
+        {
+            if (!Model.IsLiked)
+            {
+                <form method="post" asp-controller="Fanfic" asp-action="Like">
+                    <input asp-for="FanficId" value="@Model.FanficId" hidden="hidden" />
+                    <input asp-for="ChapterNumber" value="@Model.ChapterNumber" hidden="hidden" />
+                    <input type="submit" value="Like" />
+                </form>
+            }
+
+            <form method="post" asp-controller="Fanfic" asp-action="LeaveComment">
+                <div class="form-group">
+                    <input asp-for="FanficId" value="@Model.FanficId" hidden="hidden" />
+                    <input asp-for="ChapterNumber" value="@Model.ChapterNumber" hidden="hidden" />
+                    <label for="ChapterContentInput">Comment content</label>
+                    <textarea asp-for="CommentContent" name="commentContent" class="form-control" runat="server" id="ChapterContentInput" contenteditable="true"></textarea>
+                </div> <br />
+                <input class="btn btn-secondary" type="submit" value="Leave this comment" />
+            </form>
+            if (Model.IsLast && !Model.IsRated)
+            {
+                for (int i = 1; i <= 5; i++)
+                {
+                    <span class="star" id="@i">★</span>
+                }
+                <form method="post" asp-action="SetRating" asp-controller="Fanfic">
+                    <input asp-for="FanficId" value="@Model.FanficId" hidden="hidden" />
+                    <input asp-for="ChapterNumber" value="@Model.ChapterNumber" hidden="hidden" />
+                    <input name="rating" id="rating" asp-for="Rating" hidden="hidden" />
+                    <input type="submit" class="btn btn-primary" value="Set rating" />
+                </form>
+            }
+        }
+        <h2>Comments</h2>
+        foreach (Comment c in Model.Comments)
+        {
+            <h5>@c.Author.UserName</h5>
+            <div class="col">@c.Content</div>
+            <br />
+        }
+
+    }
+
+}
+
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.8.3/jquery.min.js"></script>
+<script src='http://jquery-star-rating-plugin.googlecode.com/svn/trunk/jquery.rating.js'
+        type="text/javascript"></script>
+<link rel="Stylesheet" href="http://jquery-star-rating-plugin.googlecode.com/svn/trunk/jquery.rating.css" />
+<script type="text/javascript">
+    $(function () {
+        $(".star").click(function (e) {
+            $('.star.active').removeClass("active");
+            $('#rating').val(parseInt(e.target.id));
+            for (var i = 1; i <= e.target.id; i++) {
+                $("#" + i + ".star").addClass("active");
+            }
+        })
+    });
+</script>

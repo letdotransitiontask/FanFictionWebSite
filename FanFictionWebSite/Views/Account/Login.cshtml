@@ -1,0 +1,24 @@
+﻿@model FanFictionWebSite.Models.LoginInputModel
+@{
+    Layout = "_Layout";
+}
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>@ViewData["Title"]</title>
+</head>
+<body>
+    <h1 class="h3 mb-3 font-weight-normal cc_cursor">Please sign in</h1>
+    <form method="post" asp-controller="Account" asp-action="Login">
+        <div asp-validation-summary="ModelOnly"></div>
+        <p><input asp-for="UserName" class="form-control text-input" placeholder="Email"></p>
+        <p><span asp-validation-for="UserName"></span></p>
+        <p><input asp-for="Password" class="form-control text-input" placeholder="Password"></p>
+        <p><span asp-validation-for="Password"></span></p>
+        <p><button class="btn btn-primary butt" type="submit">Log in</button></p>
+        <p><a class="btn btn-outline-primary butt" href="/Account/Register">Register</a></p>
+    </form>
+</body>
+</html>
+

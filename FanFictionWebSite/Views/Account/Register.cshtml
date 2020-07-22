@@ -1,0 +1,19 @@
+﻿@model FanFictionWebSite.Models.RegisterInputModel
+@{
+    Layout = "_Layout";
+}
+
+<h1 class="h3 mb-3 font-weight-normal cc_cursor">Please sign up</h1>
+<form method="post" asp-controller="Account" asp-action="Register">
+    <div asp-validation-summary="ModelOnly"></div>
+    <p><input asp-for="Email" class="form-control text-input" placeholder="Email"></p>
+    <p><span asp-validation-for="Email"></span></p>
+    <p><input asp-for="UserName" class="form-control text-input" placeholder="UserName"></p>
+    <p><span asp-validation-for="UserName"></span></p>
+    <p><input asp-for="Password" class="form-control text-input" placeholder="Password"></p>
+    <p><span asp-validation-for="Password"></span></p>
+    <p><input asp-for="PasswordConfirm" class="form-control text-input" placeholder="Confirm password"></p>
+    <p><span asp-validation-for="PasswordConfirm"></span></p>
+    <p><input class="btn btn-primary butt" type="submit" value="Sign up" /></p>
+    <p><a class="btn btn-outline-primary butt" href="/Account/Login">Sign in</a></p>
+</form>

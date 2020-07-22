@@ -1,0 +1,21 @@
+﻿@model FanFictionWebSite.Models.ChapterCreatingInputModel
+@{ 
+    Layout = "_Layout";
+}
+
+    <form method="post" asp-controller="Fanfic" asp-action="CreateOrEditChapter">
+        <input asp-for="IsUpdating" hidden="hidden" value="@Model.IsUpdating" />
+        <input asp-for="FanficId" hidden="hidden" value="@Model.FanficId" />
+        <div class="form-group">
+            <label for="NameInput">Your chapter name</label>
+            <input asp-for="Name" type="text" class="form-control form-control-lg" id="NameInput" placeholder="Your chapter name">
+        </div>
+        <div class="form-group">
+            <label for="ChapterContentInput">Chapter content</label>
+            <textarea asp-for="Content" class="form-control" id="ChapterContentInput" contenteditable="true"></textarea>
+        </div>
+        <input type="submit" name="createFanfic" class="btn btn-primary" value="Create fanfic" />
+        <input type="submit" name="goToNext" class="btn btn-primary" value="One more chapter" />
+        <input asp-for="FanficId" value="@Model.FanficId" hidden="hidden" />
+        <input asp-for="Number" value="@Model.Number" hidden="hidden" />
+    </form>
