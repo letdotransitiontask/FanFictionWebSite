@@ -19,12 +19,17 @@
     .active {
         color: red;
     }
+
+    .like{
+        color: red;
+    }
 </style>
 @{
     if (Model == null)
     {
         <h2>No such chapter</h2>
     }
+
     else
     {
         <h2>@Model.Name</h2>
@@ -48,19 +53,11 @@
                 <form method="post" asp-controller="Fanfic" asp-action="Like">
                     <input asp-for="FanficId" value="@Model.FanficId" hidden="hidden" />
                     <input asp-for="ChapterNumber" value="@Model.ChapterNumber" hidden="hidden" />
-                    <input type="submit" value="Like" />
+                    <input class="like btn btn-primary" type="submit" value="♥" />
                 </form>
             }
 
-            <form method="post" asp-controller="Fanfic" asp-action="LeaveComment">
-                <div class="form-group">
-                    <input asp-for="FanficId" value="@Model.FanficId" hidden="hidden" />
-                    <input asp-for="ChapterNumber" value="@Model.ChapterNumber" hidden="hidden" />
-                    <label for="ChapterContentInput">Comment content</label>
-                    <textarea asp-for="CommentContent" name="commentContent" class="form-control" runat="server" id="ChapterContentInput" contenteditable="true"></textarea>
-                </div> <br />
-                <input class="btn btn-secondary" type="submit" value="Leave this comment" />
-            </form>
+
             if (Model.IsLast && !Model.IsRated)
             {
                 for (int i = 1; i <= 5; i++)
@@ -76,6 +73,14 @@
             }
         }
         <h2>Comments</h2>
+        <form method="post" asp-controller="Fanfic" asp-action="LeaveComment">
+            <div class="form-group">
+                <input asp-for="FanficId" value="@Model.FanficId" hidden="hidden" />
+                <input asp-for="ChapterNumber" value="@Model.ChapterNumber" hidden="hidden" />
+                <textarea asp-for="CommentContent" name="commentContent" class="form-control" runat="server" id="ChapterContentInput" contenteditable="true"></textarea>
+            </div> <br />
+            <input class="btn btn-secondary" type="submit" value="Leave this comment" />
+        </form>
         foreach (Comment c in Model.Comments)
         {
             <h5>@c.Author.UserName</h5>

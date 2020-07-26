@@ -16,10 +16,8 @@ namespace FanFictionWebSite.Services
         public DbSet<Comment> Comments { get; set; }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Chapter> Chapters { get; set; }
-        public DbSet<Badge> Badges { get; set; }
         public DbSet<Like> Likes { get; set; }
         public DbSet<Mark> Marks { get; set; }
-        public DbSet<FanFictionBadge> FanFictionBadges { get; set; }
         public AppDbContext(DbContextOptions<AppDbContext> options)
            : base(options)
         {
@@ -29,16 +27,13 @@ namespace FanFictionWebSite.Services
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
-            builder.Entity<FanFictionBadge>().HasOne(x => x.Badge).WithMany(x => (IEnumerable<FanFictionBadge>)x.FanFictionBadges).HasForeignKey(x => x.BadgeId);
-            builder.Entity<FanFictionBadge>().HasOne(x => x.FanFiction).WithMany(x => (IEnumerable<FanFictionBadge>)x.FanFictionBadges).HasForeignKey(x => x.FanFictionId);
             builder.Entity<Category>().HasData(
                     new Category[]
                     {
-                            new Category(){Name = "Category 1", Id = 1},
-                            new Category(){Name = "Category 2", Id = 2},
-                            new Category(){Name = "Category 3", Id = 3},
-                            new Category(){Name = "Category 4", Id = 4},
-                            new Category(){Name = "Category 5", Id = 5},
+                            new Category(){Name = "Anime", Id = 1},
+                            new Category(){Name = "Books", Id = 2},
+                            new Category(){Name = "Cinema", Id = 3},
+                            new Category(){Name = "Cartoons", Id = 4},
             });
         }
     }

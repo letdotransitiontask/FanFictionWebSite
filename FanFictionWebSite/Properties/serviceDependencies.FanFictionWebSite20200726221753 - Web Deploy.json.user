@@ -1,0 +1,18 @@
+{
+  "dependencies": {
+    "mssql1": {
+      "restored": true,
+      "restoreTime": "2020-07-26T19:21:50.0363148Z"
+    }
+  },
+  "parameters": {
+    "resourceGroup": {
+      "Type": "resourceGroup",
+      "Value": "FanFictionWebSite20200722153442ResourceGroup"
+    },
+    "subscriptionId": {
+      "Type": "subscription",
+      "Value": "c844099c-5d16-45aa-b726-5c073b7a78a8"
+    }
+  }
+}

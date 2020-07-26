@@ -14,13 +14,10 @@ namespace FanFictionWebSite.Models
         [Required]
         public string Description { get; set; }
         [Required]
-        public string Badges { get; set; }
-        public string AllSiteBadges { get; set; }
-        [Required]
         public int FanficId { get; set; }
         [Required]
         public bool IsUpdating { get; set; }
         [Required]
-        public Category Category { get; set; }
+        public string Category { get; set; }
     }
 }

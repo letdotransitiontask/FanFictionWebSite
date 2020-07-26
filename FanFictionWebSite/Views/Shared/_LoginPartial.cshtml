@@ -6,6 +6,13 @@
     <ul class="navbar-nav">
         @if (SignInManager.IsSignedIn(User))
         {
+            var user = await UserManager.FindByNameAsync(User.Identity.Name);
+            if (user != null && await UserManager.IsInRoleAsync(user, "admin"))
+            {
+                <li class="nav-item">
+                    <a class="nav-link text-dark" href="/Account/Admin/">Go to admin page</a>
+                </li>
+            }
             <li class="nav-item">
                 <a class="nav-link text-dark" asp-area="Identity" asp-page="/Account/Manage/Index" title="Manage">Hello @User.Identity.Name!</a>
             </li>

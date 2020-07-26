@@ -33,7 +33,7 @@ namespace FanFictionWebSite.Controllers
             ViewChapterViewModel model;
             if (User.Identity.IsAuthenticated)
             {
-                var user = await userManager.GetUserAsync(User);
+                var user = await userManager.GetUserAsync(User); 
                 model = fanficService.GetChapterViewModel(fanficId, number, user);
             }
             else model = fanficService.GetChapterViewModel(fanficId, number, null);
@@ -41,8 +41,13 @@ namespace FanFictionWebSite.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateOrEditChapter(int fanficId, int number)
+        public async Task<IActionResult> CreateOrEditChapter(int fanficId, int number)
         {
+            var fanfic = fanficService.GetFanfic(fanficId);
+            if (!User.Identity.IsAuthenticated) return Redirect("/Account/Login/");
+            var user = await userManager.GetUserAsync(User);
+            var admin = await userManager.IsInRoleAsync(user, "admin");
+            if (user.Id != fanfic.Author.Id && !admin) return Redirect("/Home/Index/");
             ViewBag.FanficId = fanficId;
             ViewBag.Number = number;
             return View(fanficService.GetChapterCreatingInputModel(fanficId, number));
@@ -55,7 +60,6 @@ namespace FanFictionWebSite.Controllers
             return Redirect("/Fanfic/UserFanficControl/");
         }
 
-        //FIIIIIIIIIIIIIIIIIIIIIX!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         [HttpPost]
         public IActionResult CreateOrEditChapter(ChapterCreatingInputModel model, string createFanfic, string goToNext)
         {
@@ -75,8 +79,16 @@ namespace FanFictionWebSite.Controllers
         }
 
         [HttpGet]
-        public IActionResult CreateOrEdit(int fanficId = -1)
+        public async Task<IActionResult> CreateOrEdit(int fanficId = -1)
         {
+            if(fanficId != -1)
+            {
+                var fanfic = fanficService.GetFanfic(fanficId);
+                if (!User.Identity.IsAuthenticated) return Redirect("/Account/Login/");
+                var user = await userManager.GetUserAsync(User);
+                var admin = await userManager.IsInRoleAsync(user, "admin");
+                if (user.Id != fanfic.Author.Id && !admin) return Redirect("/Home/Index/");
+            }
             return View(fanficService.GetFanficCreatingInputModel(fanficId));
         }
         
@@ -100,7 +112,7 @@ namespace FanFictionWebSite.Controllers
                 fanficService.CreateLike(author, model.ChapterNumber, model.FanficId);
             return Redirect("/Fanfic/ViewChapter/?fanficId=" + model.FanficId + "&number=" + model.ChapterNumber);
         }
-        //(int fanficId, int number, string 
+
         [HttpPost]
         public async Task<IActionResult> LeaveComment(ViewChapterViewModel model)
         {

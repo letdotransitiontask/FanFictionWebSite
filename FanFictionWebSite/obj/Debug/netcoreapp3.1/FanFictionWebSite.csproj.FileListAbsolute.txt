@@ -82,8 +82,9 @@ C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\obj\Debug\netcor
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Debug\netcoreapp3.1\Markdig.dll
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\obj\Debug\netcoreapp3.1\Razor\Views\Fanfic\UserFanficControl.cshtml.g.cs
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\obj\Debug\netcoreapp3.1\Razor\Views\Account\Admin.cshtml.g.cs
-C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.FanFictionWebSite20200722153442 - Web Deploy.json
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.json
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Debug\netcoreapp3.1\Microsoft.EntityFrameworkCore.Design.dll
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\obj\Debug\netcoreapp3.1\FanFictionWebSite.csproj.CoreCompileInputs.cache
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\obj\Debug\netcoreapp3.1\FanFictionWebSite.MvcApplicationPartsAssemblyInfo.cache
+C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.FanFictionWebSite20200726221415 - Web Deploy.json
+C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Debug\netcoreapp3.1\Properties\serviceDependencies.FanFictionWebSite20200726221753 - Web Deploy.json

@@ -11,8 +11,9 @@ namespace FanFictionWebSite.Services
 {
     public class FanficsService
     {
-        public static string Parse(string markdown)
+        public string Parse(string markdown)
         {
+            if (markdown == null) return "";
             var pipeline = new MarkdownPipelineBuilder()
                 .UseAdvancedExtensions()
                 .Build();
@@ -51,40 +52,18 @@ namespace FanFictionWebSite.Services
                 };
             }
         }
-
-        private string BadgesToJsonString(List<Badge> badges)
-        {
-            string result = "";
-            foreach(var badge in badges)
-            {
-                result += badge.Content + ",";
-            }
-            result = result.Substring(0, result.Length - 1);
-            return result;
-        }
-
-        private void RemoveAllBadges(int fanficId)
-        {
-            var fanfic = appDbContext.FanFictions.Include(f => f.FanFictionBadges).Single(f => f.Id == fanficId);
-            foreach(var b in fanfic.FanFictionBadges)
-            {
-                appDbContext.FanFictionBadges.Remove(b);
-            }
-            appDbContext.SaveChanges();
-        }
         public FanficCreatingInputModel GetFanficCreatingInputModel(int fanficId)
         {
             if (fanficId == -1) return new FanficCreatingInputModel() {FanficId = fanficId, IsUpdating = false};
             else
             {
-                var fanfic = appDbContext.FanFictions.Include(f => f.FanFictionBadges).Include(f => f.Category).Single(f => f.Id == fanficId);
+                var fanfic = appDbContext.FanFictions.Include(f => f.Category).Single(f => f.Id == fanficId);
                 return new FanficCreatingInputModel()
                 {
                     FanficId = fanficId,
                     Name = fanfic.Name,
                     Description = fanfic.Description,
-                    //Badges = BadgesToJsonString(fanfic.Badges),
-                    Category = fanfic.Category, 
+                    Category = fanfic.Category.Name, 
                     IsUpdating = true
                 };
             }
@@ -96,21 +75,23 @@ namespace FanFictionWebSite.Services
                 Author = user,
                 Name = model.Name,
                 Description = model.Description,
-                Category = model.Category
+                Category = appDbContext.Categories.Single(c => c.Name == model.Category)
             };
             appDbContext.FanFictions.Add(fanfic);
             appDbContext.SaveChanges();
-            //AddAllBadges(model.Badges, fanfic.Id);
             return fanfic;
         }
 
+        public FanFiction GetFanfic(int id)
+        {
+            return appDbContext.FanFictions.Include(f => f.Author).Single(f => f.Id == id);
+        }
         public FanFiction UpdateFanfic(User user, FanficCreatingInputModel model)
         {
             var fanfic = appDbContext.FanFictions.Find(model.FanficId);
             fanfic.Name = model.Name;
-            fanfic.Category = model.Category;
+            fanfic.Category = appDbContext.Categories.Single(c => c.Name == model.Category);
             fanfic.Description = model.Description;
-            //appDbContext.FanFictions.Update(fanfic);
             appDbContext.SaveChanges();
             return fanfic;
         }
@@ -143,11 +124,21 @@ namespace FanFictionWebSite.Services
 
         public List<FanficInListViewModel> GetFanficsList()
         {
-            var fanfics = appDbContext.FanFictions.ToList();
+            var fanfics = appDbContext.FanFictions.Include(f => f.Comments).Include(f => f.Category).Include(f => f.Marks).ToList();
             var result = new List<FanficInListViewModel>();
             foreach(var fanfic in fanfics)
             {
-                result.Add(new FanficInListViewModel() { Name = fanfic.Name, Description = fanfic.Description, Id = fanfic.Id });
+                double rating = 0;
+                if (fanfic.Marks.Count == 0) rating = -1;
+                else
+                {
+                    foreach (var m in fanfic.Marks)
+                    {
+                        rating += m.Value;
+                    }
+                    rating /= fanfic.Marks.Count;
+                }
+                result.Add(new FanficInListViewModel() { Name = fanfic.Name, Description = fanfic.Description, Id = fanfic.Id, Comments = fanfic.Comments.Count, Rating = rating, Category = fanfic.Category.Name });
             }
             return result;
         }
@@ -156,35 +147,6 @@ namespace FanFictionWebSite.Services
         {
             var marks = appDbContext.Marks.Include(m => m.User).Include(m => m.Fanfic).Where(m => m.User.Id == user.Id && m.Fanfic.Id == fanficId);
             return (marks.Count() > 0);
-        }
-
-        public void AddBadge(string content, int fanficId)
-        {
-            var badges = appDbContext.Badges.Where(b => b.Content.ToLower() == content);
-            Badge badge;
-            if(badges.Count() == 0)
-            {
-                badge = new Badge()
-                {
-                    Content = content
-                };
-                appDbContext.Badges.Add(badge);
-                appDbContext.SaveChanges();
-            }
-            badge = appDbContext.Badges.SingleOrDefault(b => b.Content == content);
-            var fanfic = appDbContext.FanFictions.Find(fanficId);
-            if (appDbContext.FanFictionBadges.Where(fb => fb.FanFictionId == fanficId && fb.BadgeId == badge.Id).Count() == 0)
-                appDbContext.FanFictionBadges.Add(new FanFictionBadge() { BadgeId = badge.Id, FanFictionId = fanficId });
-            appDbContext.SaveChanges();
-        }
-
-        public void AddAllBadges(string badges, int fanficId)
-        {
-            var badgesString = badges.Split(",");
-            foreach (string b in badgesString)
-            {
-                AddBadge(b, fanficId);
-            }
         }
 
         public Mark SetRating(User user, int fanficId, int value)
@@ -269,7 +231,7 @@ namespace FanFictionWebSite.Services
 
         public void RemoveFanfic(int fanficId, string userId)
         {
-            var fanfic = appDbContext.FanFictions.Include(f => f.Author).Include(f => f.FanFictionBadges).Include(f => f.Comments).Include(f => f.Chapters).Include(f => f.Marks).Include(f => f.FanFictionBadges).Single(f => f.Id == fanficId);
+            var fanfic = appDbContext.FanFictions.Include(f => f.Author).Include(f => f.Comments).Include(f => f.Chapters).Include(f => f.Marks).Single(f => f.Id == fanficId);
             if(fanfic.Author.Id == userId) {
                 foreach(var c in fanfic.Chapters)
                 {
@@ -287,10 +249,6 @@ namespace FanFictionWebSite.Services
                     appDbContext.Remove(m);
                 }
                 appDbContext.SaveChanges();
-                foreach(var fb in fanfic.FanFictionBadges)
-                {
-                    appDbContext.Remove(fb);
-                }
                 appDbContext.SaveChanges();
                 foreach (var c in fanfic.Comments)
                 {

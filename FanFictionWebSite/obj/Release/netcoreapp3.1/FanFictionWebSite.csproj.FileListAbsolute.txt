@@ -1,7 +1,6 @@
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Release\netcoreapp3.1\appsettings.Development.json
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Release\netcoreapp3.1\appsettings.json
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Release\netcoreapp3.1\Properties\launchSettings.json
-C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Release\netcoreapp3.1\Properties\serviceDependencies.FanFictionWebSite20200722153442 - Web Deploy.json
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Release\netcoreapp3.1\Properties\serviceDependencies.json
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Release\netcoreapp3.1\FanFictionWebSite.exe
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Release\netcoreapp3.1\FanFictionWebSite.deps.json
@@ -87,3 +86,5 @@ C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\obj\Release\netc
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\obj\Release\netcoreapp3.1\FanFictionWebSite.dll
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\obj\Release\netcoreapp3.1\FanFictionWebSite.pdb
 C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\obj\Release\netcoreapp3.1\FanFictionWebSite.genruntimeconfig.cache
+C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Release\netcoreapp3.1\Properties\serviceDependencies.FanFictionWebSite20200726221415 - Web Deploy.json
+C:\Users\misha\source\repos\FanFictionWebSite\FanFictionWebSite\bin\Release\netcoreapp3.1\Properties\serviceDependencies.FanFictionWebSite20200726221753 - Web Deploy.json
